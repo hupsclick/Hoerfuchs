@@ -1,0 +1,46 @@
+{
+  "name": "hoerfuchs",
+  "author": "Manfred Haecker",
+  "version": "1.0.0",
+  "description": "Hörfuchs - Mehr hören, mehr leben. Eine professionelle Hörhilfe-Anwendung.",
+  "main": "main.js",
+  "productName": "Hörfuchs",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "electron .",
+    "pack": "npm run build && electron-builder --win --x64 --dir",
+    "dist": "npm run build && electron-builder --win --x64"
+  },
+  "dependencies": {
+    "lucide-react": "^0.263.1"
+  },
+  "devDependencies": {
+    "electron": "^37.10.3",
+    "electron-builder": "^24.13.3",
+    "vite": "^4.4.5"
+  },
+"build": {
+  "appId": "de.hoerfuchs.app",
+  "productName": "Hörfuchs",
+  "directories": {
+    "output": "Hörfuchs-release"
+  },
+  "files": [
+    "dist/**/*",
+    "main.js",
+    "assets/**/*"
+  ],
+  "win": {
+    "target": "nsis",
+    "icon": "favicon.ico"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "installerIcon": "favicon.ico",
+    "uninstallDisplayName": "Hörfuchs"
+  }
+ }
+}

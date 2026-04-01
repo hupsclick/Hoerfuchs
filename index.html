@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Manfred Häcker">
+    <meta name="publisher" content="Manfred Häcker">
+    <meta name="description" content="Hörhilfe zum besseren Hören">
+    <meta name="copyright" content="Manfred Häcker">
+	<meta name="keywords" content="Hupsclick, Hörhilfe, Hörfuchs, Deutsch">
+	<meta property="og:title" content="Hörhilfe zum besseren Hören">
+    <meta property="og:description" content="Hörhilfe zum besseren Hören">
+    <meta property="og:type" content="website">
+    <link rel="shortcut icon" href="assets/icon.ico" />
+    <title>Hörfuchs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+ 
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-card: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border-color: #e0e0e0;
+            --accent-color: #4CAF50;
+            --accent-hover: #45a049;
+            --danger-color: #f44336;
+            --warning-bg: #fff3cd;
+            --warning-border: #ffc107;
+            --warning-text: #856404;
+        }
+ 
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-card: #252525;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --border-color: #404040;
+            --accent-color: #66BB6A;
+            --accent-hover: #57a85c;
+            --warning-bg: #3d3520;
+            --warning-border: #ffc107;
+            --warning-text: #ffd54f;
+        }
+ 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+        }
+ 
+        .header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+ 
+        .header h1 {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            font-weight: 600;
+        }
+ 
+        .header-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+ 
+        .icon-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+ 
+        .icon-btn:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+ 
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+ 
+        .warning-box {
+            background: var(--warning-bg);
+            border: 2px solid var(--warning-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--warning-text);
+        }
+ 
+        .warning-box h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+ 
+        .warning-box p {
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+ 
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+ 
+        .card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+ 
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+ 
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #666;
+        }
+ 
+        .status-dot.active {
+            background: var(--accent-color);
+            animation: pulse 2s infinite;
+        }
+ 
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+ 
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+ 
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+ 
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+ 
+        input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--bg-secondary);
+            outline: none;
+            -webkit-appearance: none;
+        }
+ 
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+ 
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+ 
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            border: none;
+        }
+ 
+        input[type="range"]::-moz-range-track {
+            background: var(--bg-secondary);
+            border-radius: 3px;
+        }
+ 
+        .value-display {
+            min-width: 60px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+ 
+        .eq-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+ 
+        .eq-band {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+ 
+        .eq-band label {
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 0;
+        }
+ 
+        .eq-slider {
+            width: 120px;
+            height: 8px;
+            background: var(--bg-secondary);
+            outline: none;
+            border-radius: 4px;
+            transform: rotate(-90deg);
+            transform-origin: center center;
+            margin: 60px 0;
+        }
+ 
+        .eq-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+        }
+ 
+        .eq-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            border: none;
+        }
+ 
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+ 
+        button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+ 
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+ 
+        button.danger {
+            background: var(--danger-color);
+        }
+ 
+        button.danger:hover {
+            background: #da190b;
+        }
+ 
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+ 
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+ 
+            .container {
+                padding: 1rem 0.5rem;
+            }
+ 
+            .card {
+                padding: 1rem;
+            }
+ 
+            .eq-controls {
+                grid-template-columns: repeat(3, 1fr);
+            }
+ 
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+        }
+ 
+        .footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎧 Hörfuchs</h1>
+        <div class="header-buttons">
+            <button class="icon-btn" id="darkModeToggle" title="Dark Mode">🌙</button>
+        </div>
+    </div>
+ 
+    <div class="container">
+        <div class="warning-box" id="initialWarning">
+            <h3>⚠️ Wichtige Sicherheitshinweise</h3>
+            <p><strong>Bitte lesen Sie diese Hinweise sorgfältig:</strong></p>
+            <p>• Schließen Sie <strong>zuerst Ihre Kopfhörer</strong> an, bevor Sie das Mikrofon aktivieren</p>
+            <p>• Vermeiden Sie Rückkopplungen, die zu Hörschäden führen können</p>
+            <p>• Beginnen Sie mit niedriger Lautstärke und erhöhen Sie diese langsam</p>
+            <p>• Diese App dient als technische Hörhilfe und ersetzt keine professionelle medizinische Beratung</p>
+            <p>• Bei anhaltenden Hörproblemen konsultieren Sie bitte einen HNO-Arzt oder Audiologen</p>
+            <p><strong>Die Nutzung erfolgt auf eigene Verantwortung. Wir übernehmen keine Haftung für Hörschäden durch unsachgemäße Verwendung.</strong></p>
+        </div>
+ 
+        <div class="card">
+            <h2>Status</h2>
+            <div class="status-indicator">
+                <div class="status-dot" id="statusDot"></div>
+                <span id="statusText">Mikrofon inaktiv</span>
+            </div>
+            <button id="toggleAudio">Mikrofon aktivieren</button>
+        </div>
+ 
+        <div class="card">
+            <h2>Lautstärke & Balance</h2>
+            
+            <div class="control-group">
+                <label for="masterVolume">Gesamtlautstärke</label>
+                <div class="slider-container">
+                    <input type="range" id="masterVolume" min="0" max="100" value="50">
+                    <span class="value-display" id="masterVolumeValue">50%</span>
+                </div>
+            </div>
+ 
+            <div class="control-group">
+                <label for="balance">Balance (Links ← → Rechts)</label>
+                <div class="slider-container">
+                    <span style="font-size: 0.8rem;">L</span>
+                    <input type="range" id="balance" min="-100" max="100" value="0">
+                    <span style="font-size: 0.8rem;">R</span>
+                    <span class="value-display" id="balanceValue">Mitte</span>
+                </div>
+            </div>
+        </div>
+ 
+        <div class="card">
+            <h2>Equalizer (Frequenzanpassung)</h2>
+            <div class="eq-controls">
+                <div class="eq-band">
+                    <input type="range" class="eq-slider" id="eq100" min="-12" max="12" value="0" step="1">
+                    <label>Bass<br>100 Hz</label>
+                    <span class="value-display" id="eq100Value">0 dB</span>
+                </div>
+                <div class="eq-band">
+                    <input type="range" class="eq-slider" id="eq500" min="-12" max="12" value="0" step="1">
+                    <label>Tief<br>500 Hz</label>
+                    <span class="value-display" id="eq500Value">0 dB</span>
+                </div>
+                <div class="eq-band">
+                    <input type="range" class="eq-slider" id="eq1k" min="-12" max="12" value="0" step="1">
+                    <label>Mittel<br>1 kHz</label>
+                    <span class="value-display" id="eq1kValue">0 dB</span>
+                </div>
+                <div class="eq-band">
+                    <input type="range" class="eq-slider" id="eq3k" min="-12" max="12" value="0" step="1">
+                    <label>Hoch<br>3 kHz</label>
+                    <span class="value-display" id="eq3kValue">0 dB</span>
+                </div>
+                <div class="eq-band">
+                    <input type="range" class="eq-slider" id="eq8k" min="-12" max="12" value="0" step="1">
+                    <label>Höhen<br>8 kHz</label>
+                    <span class="value-display" id="eq8kValue">0 dB</span>
+                </div>
+            </div>
+        </div>
+ 
+        <div class="card">
+            <h2>Einstellungen speichern</h2>
+            <div class="button-group">
+                <button id="saveSettings">💾 Einstellungen speichern</button>
+                <button id="loadSettings">📂 Einstellungen laden</button>
+                <button id="resetSettings" class="danger">🔄 Auf Standard zurücksetzen</button>
+            </div>
+        </div>
+    </div>
+ 
+    <div class="footer">
+        <p>© 2026 Manfred Häcker</p>
+    </div>
+ 
+    <script>
+// ────────────────────────────────────────────────────────────────
+let audioContext;
+let microphone;
+let preGainNode;
+let gainNode;
+let pannerNode;
+let filters = {};
+let isActive = false;
+ 
+// ─── Dark Mode ──────────────────────────────────────────────────
+const darkModeToggle = document.getElementById('darkModeToggle');
+const savedTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+darkModeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+ 
+darkModeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    darkModeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+});
+ 
+// ─── Hilfsfunktion: Warning ausblenden ──────────────────────────
+function hideInitialWarning() {
+    const warning = document.getElementById('initialWarning');
+    if (warning) {
+        warning.style.display = 'none';
+    }
+}
+ 
+// ─── Audio Toggle ───────────────────────────────────────────────
+document.getElementById('toggleAudio').addEventListener('click', async () => {
+    if (!isActive) {
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+ 
+            const stream = await navigator.mediaDevices.getUserMedia({
+                audio: {
+                    echoCancellation: false,
+                    noiseSuppression: false,
+                    autoGainControl: false
+                }
+            });
+ 
+            microphone = audioContext.createMediaStreamSource(stream);
+ 
+            preGainNode = audioContext.createGain();
+            preGainNode.gain.value = 3;
+ 
+            gainNode = audioContext.createGain();
+            pannerNode = audioContext.createStereoPanner();
+ 
+            // EQ Filter
+            const frequencies = [100, 500, 1000, 3000, 8000];
+            frequencies.forEach(freq => {
+                const filter = audioContext.createBiquadFilter();
+                filter.type = 'peaking';
+                filter.frequency.value = freq;
+                filter.Q.value = 1;
+                filter.gain.value = 0;
+                filters[freq] = filter;
+            });
+ 
+            // Verkabelung
+            microphone.connect(preGainNode);
+            preGainNode.connect(filters[100]);
+            filters[100].connect(filters[500]);
+            filters[500].connect(filters[1000]);
+            filters[1000].connect(filters[3000]);
+            filters[3000].connect(filters[8000]);
+            filters[8000].connect(gainNode);
+            gainNode.connect(pannerNode);
+            pannerNode.connect(audioContext.destination);
+ 
+            hideInitialWarning();
+ 
+            updateVolume();
+            updateBalance();
+            updateAllEQ();
+ 
+            isActive = true;
+            document.getElementById('statusDot').classList.add('active');
+            document.getElementById('statusText').textContent = 'Mikrofon aktiv';
+ 
+            const toggleBtn = document.getElementById('toggleAudio');
+            toggleBtn.textContent = 'Mikrofon deaktivieren';
+            toggleBtn.classList.add('danger');
+ 
+        } catch (err) {
+            alert('Fehler beim Zugriff auf das Mikrofon:\n' + err.message);
+        }
+    } else {
+        if (microphone?.mediaStream) {
+            microphone.mediaStream.getTracks().forEach(track => track.stop());
+        }
+        if (audioContext) {
+            audioContext.close();
+        }
+ 
+        isActive = false;
+        document.getElementById('statusDot').classList.remove('active');
+        document.getElementById('statusText').textContent = 'Mikrofon inaktiv';
+ 
+        const toggleBtn = document.getElementById('toggleAudio');
+        toggleBtn.textContent = 'Mikrofon aktivieren';
+        toggleBtn.classList.remove('danger');
+    }
+});
+ 
+// ─── Lautstärke ─────────────────────────────────────────────────
+const masterVolume = document.getElementById('masterVolume');
+masterVolume.addEventListener('input', updateVolume);
+ 
+function updateVolume() {
+    const value = parseInt(masterVolume.value, 10);
+    document.getElementById('masterVolumeValue').textContent = value + '%';
+    if (gainNode) {
+        gainNode.gain.value = (value / 100) * 3;
+    }
+}
+ 
+// ─── Balance ─────────────────────────────────────────────────────
+const balance = document.getElementById('balance');
+balance.addEventListener('input', updateBalance);
+ 
+function updateBalance() {
+    const value = parseInt(balance.value, 10);
+    let text = 'Mitte';
+    if (value < -10) text = 'Links ' + Math.abs(value) + '%';
+    else if (value > 10) text = 'Rechts ' + value + '%';
+    document.getElementById('balanceValue').textContent = text;
+    if (pannerNode) pannerNode.pan.value = value / 100;
+}
+ 
+// ─── Equalizer ───────────────────────────────────────────────────
+const eqIds = ['eq100', 'eq500', 'eq1k', 'eq3k', 'eq8k'];
+const eqFreqs = [100, 500, 1000, 3000, 8000];
+ 
+eqIds.forEach((id, index) => {
+    const slider = document.getElementById(id);
+    slider.addEventListener('input', () => {
+        const value = parseFloat(slider.value);
+        document.getElementById(id + 'Value').textContent =
+            (value > 0 ? '+' : '') + value + ' dB';
+        if (filters[eqFreqs[index]]) {
+            filters[eqFreqs[index]].gain.value = value;
+        }
+    });
+});
+ 
+function updateAllEQ() {
+    eqIds.forEach((id, index) => {
+        const value = parseFloat(document.getElementById(id).value);
+        if (filters[eqFreqs[index]]) {
+            filters[eqFreqs[index]].gain.value = value;
+        }
+    });
+}
+ 
+// ─── Speichern / Laden / Reset ───────────────────────────────────
+document.getElementById('saveSettings').addEventListener('click', () => {
+    const settings = {
+        volume: masterVolume.value,
+        balance: balance.value,
+        eq: eqIds.map(id => document.getElementById(id).value)
+    };
+    localStorage.setItem('audioSettings', JSON.stringify(settings));
+    alert('✓ Einstellungen erfolgreich gespeichert!');
+});
+ 
+document.getElementById('loadSettings').addEventListener('click', () => {
+    const saved = localStorage.getItem('audioSettings');
+    if (saved) {
+        const settings = JSON.parse(saved);
+        masterVolume.value = settings.volume;
+        balance.value = settings.balance;
+        eqIds.forEach((id, index) => {
+            const eqVal = settings.eq[index];
+            document.getElementById(id).value = eqVal;
+            document.getElementById(id + 'Value').textContent =
+                (eqVal > 0 ? '+' : '') + eqVal + ' dB';
+        });
+        updateVolume();
+        updateBalance();
+        updateAllEQ();
+        alert('✓ Einstellungen erfolgreich geladen!');
+    } else {
+        alert('ℹ️ Keine gespeicherten Einstellungen gefunden.');
+    }
+});
+ 
+document.getElementById('resetSettings').addEventListener('click', () => {
+    if (confirm('Möchten Sie wirklich alle Einstellungen zurücksetzen?')) {
+        masterVolume.value = 50;
+        balance.value = 0;
+        eqIds.forEach(id => {
+            document.getElementById(id).value = 0;
+            document.getElementById(id + 'Value').textContent = '0 dB';
+        });
+        updateVolume();
+        updateBalance();
+        updateAllEQ();
+        localStorage.removeItem('audioSettings');
+        alert('✓ Einstellungen wurden zurückgesetzt.');
+    }
+});
+ 
+// ─── Autoload beim Start ─────────────────────────────────────────
+window.addEventListener('load', () => {
+    const saved = localStorage.getItem('audioSettings');
+    if (saved) {
+        document.getElementById('loadSettings').click();
+    } else {
+        updateVolume();
+        updateBalance();
+        updateAllEQ();
+    }
+});
+    </script>
+
+</body>
+</html>

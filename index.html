@@ -11,6 +11,16 @@
   <meta property="og:title" content="Hörhilfe zum besseren Hören">
   <meta property="og:description" content="Hörhilfe zum besseren Hören">
   <meta property="og:type" content="website">
+
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#4CAF50">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Hörfuchs">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/icon.ico">
+
   <link rel="shortcut icon" href="assets/icon.ico" />
   <title>Hörfuchs</title>
 <style>
@@ -19,7 +29,6 @@
     padding: 0;
     box-sizing: border-box;
   }
-
   :root {
     --bg-primary: #ffffff;
     --bg-secondary: #f5f5f5;
@@ -34,7 +43,6 @@
     --warning-border: #ffc107;
     --warning-text: #856404;
   }
-
   [data-theme="dark"] {
     --bg-primary: #1a1a1a;
     --bg-secondary: #2d2d2d;
@@ -48,7 +56,6 @@
     --warning-border: #ffc107;
     --warning-text: #ffd54f;
   }
-
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     background: var(--bg-primary);
@@ -56,7 +63,6 @@
     transition: background-color 0.3s, color 0.3s;
     min-height: 100vh;
   }
-
   .header {
     background: var(--bg-card);
     border-bottom: 1px solid var(--border-color);
@@ -66,17 +72,14 @@
     align-items: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
-
   .header h1 {
     font-size: clamp(1.2rem, 4vw, 1.8rem);
     font-weight: 600;
   }
-
   .header-buttons {
     display: flex;
     gap: 0.5rem;
   }
-
   .icon-btn {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -91,19 +94,16 @@
     font-size: 1.2rem;
     transition: all 0.3s;
   }
-
   .icon-btn:hover {
     background: var(--accent-color);
     color: white;
     transform: translateY(-2px);
   }
-
   .container {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem 1rem;
   }
-
   .warning-box {
     background: var(--warning-bg);
     border: 2px solid var(--warning-border);
@@ -112,7 +112,6 @@
     margin-bottom: 2rem;
     color: var(--warning-text);
   }
-
   .warning-box h3 {
     display: flex;
     align-items: center;
@@ -120,12 +119,10 @@
     margin-bottom: 1rem;
     font-size: 1.1rem;
   }
-
   .warning-box p {
     line-height: 1.6;
     margin-bottom: 0.5rem;
   }
-
   .card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
@@ -134,13 +131,11 @@
     margin-bottom: 1.5rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
-
   .card h2 {
     font-size: 1.3rem;
     margin-bottom: 1.5rem;
     color: var(--text-primary);
   }
-
   .status-indicator {
     display: flex;
     align-items: center;
@@ -150,28 +145,23 @@
     border-radius: 8px;
     margin-bottom: 1rem;
   }
-
   .status-dot {
     width: 12px;
     height: 12px;
     border-radius: 50%;
     background: #666;
   }
-
   .status-dot.active {
     background: var(--accent-color);
     animation: pulse 2s infinite;
   }
-
   @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.5; }
   }
-
   .control-group {
     margin-bottom: 1.5rem;
   }
-
   .control-group label {
     display: block;
     margin-bottom: 0.5rem;
@@ -179,13 +169,11 @@
     color: var(--text-secondary);
     font-size: 0.9rem;
   }
-
   .slider-container {
     display: flex;
     align-items: center;
     gap: 1rem;
   }
-
   input[type="range"] {
     flex: 1;
     height: 6px;
@@ -194,7 +182,6 @@
     outline: none;
     -webkit-appearance: none;
   }
-
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -205,11 +192,9 @@
     cursor: pointer;
     transition: all 0.3s;
   }
-
   input[type="range"]::-webkit-slider-thumb:hover {
     transform: scale(1.2);
   }
-
   input[type="range"]::-moz-range-thumb {
     width: 20px;
     height: 20px;
@@ -218,19 +203,16 @@
     cursor: pointer;
     border: none;
   }
-
   input[type="range"]::-moz-range-track {
     background: var(--bg-secondary);
     border-radius: 3px;
   }
-
   .value-display {
     min-width: 60px;
     text-align: center;
     font-weight: 600;
     color: var(--text-primary);
   }
-
   /* ========== Equalizer – korrigierte Position ========== */
   .eq-controls {
     display: grid;
@@ -239,7 +221,6 @@
     margin-top: 1rem;
     justify-items: center;
   }
-
   .eq-band {
     display: flex;
     flex-direction: column;
@@ -248,7 +229,6 @@
     width: 100%;
     max-width: 90px;
   }
-
   .eq-band label {
     font-size: 0.8rem;
     text-align: center;
@@ -256,14 +236,12 @@
     line-height: 1.3;
     color: var(--text-secondary);
   }
-
   .eq-slider-wrapper {
     height: 140px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
-
   .eq-slider {
     width: 110px;
     height: 8px;
@@ -274,7 +252,6 @@
     transform-origin: center center;
     -webkit-appearance: none;
   }
-
   .eq-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 18px;
@@ -283,7 +260,6 @@
     background: var(--accent-color);
     cursor: pointer;
   }
-
   .eq-slider::-moz-range-thumb {
     width: 18px;
     height: 18px;
@@ -292,7 +268,6 @@
     cursor: pointer;
     border: none;
   }
-
   button {
     background: var(--accent-color);
     color: white;
@@ -305,41 +280,34 @@
     transition: all 0.3s;
     width: 100%;
   }
-
   button:hover {
     background: var(--accent-hover);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
   }
-
   button:disabled {
     background: #ccc;
     cursor: not-allowed;
     transform: none;
   }
-
   button.danger {
     background: var(--danger-color);
   }
-
   button.danger:hover {
     background: #da190b;
   }
-
   .button-group {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
     margin-top: 1rem;
   }
-
   .footer {
     text-align: center;
     padding: 2rem 1rem;
     color: var(--text-secondary);
     font-size: 0.9rem;
   }
-
   /* ========== Kaffee-Button ========== */
   .hud-coffee-btn {
     position: fixed;
@@ -371,7 +339,6 @@
   .hud-coffee-btn:active {
     transform: scale(0.96);
   }
-
   /* Coffee Modal */
   .coffee-modal-overlay {
     position: fixed;
@@ -526,7 +493,6 @@
     font-size: 11px;
     cursor: pointer;
   }
-
   /* Responsive */
   @media (max-width: 768px) {
     .header {
@@ -555,7 +521,6 @@
       grid-template-columns: 1fr;
     }
   }
-
   @media (max-width: 420px) {
     .eq-controls {
       grid-template-columns: repeat(3, 1fr);
@@ -580,7 +545,6 @@
       <button class="icon-btn" id="darkModeToggle" title="Dark Mode">🌙</button>
     </div>
   </div>
-
   <div class="container">
     <div class="warning-box" id="initialWarning">
       <h3>⚠️ Wichtige Sicherheitshinweise</h3>
@@ -592,7 +556,6 @@
       <p>• Bei anhaltenden Hörproblemen konsultieren Sie bitte einen HNO-Arzt oder Audiologen</p>
       <p><strong>Die Nutzung erfolgt auf eigene Verantwortung. Wir übernehmen keine Haftung für Hörschäden durch unsachgemäße Verwendung.</strong></p>
     </div>
-
     <div class="card">
       <h2>Status</h2>
       <div class="status-indicator">
@@ -601,7 +564,6 @@
       </div>
       <button id="toggleAudio">Mikrofon aktivieren</button>
     </div>
-
     <div class="card">
       <h2>Lautstärke & Balance</h2>
       
@@ -612,7 +574,6 @@
           <span class="value-display" id="masterVolumeValue">50%</span>
         </div>
       </div>
-
       <div class="control-group">
         <label for="balance">Balance (Links ← → Rechts)</label>
         <div class="slider-container">
@@ -623,7 +584,6 @@
         </div>
       </div>
     </div>
-
     <div class="card">
       <h2>Equalizer (Frequenzanpassung)</h2>
       <div class="eq-controls">
@@ -664,7 +624,6 @@
         </div>
       </div>
     </div>
-
     <div class="card">
       <h2>Einstellungen speichern</h2>
       <div class="button-group">
@@ -674,11 +633,9 @@
       </div>
     </div>
   </div>
-
   <div class="footer">
     <p>© Hupsclick Manfred Häcker</p>
   </div>
-
   <!-- Kaffee-Button -->
   <button
     id="coffeeHUD"
@@ -689,7 +646,6 @@
   >
     ☕ KAFFEE
   </button>
-
   <!-- Coffee Modal -->
   <div
     id="coffeeModal"
@@ -754,7 +710,6 @@
       </footer>
     </section>
   </div>
-
 <script>
 // ────────────────────────────────────────────────────────────────
 let audioContext;
@@ -764,13 +719,11 @@ let gainNode;
 let pannerNode;
 let filters = {};
 let isActive = false;
-
 // ─── Dark Mode ──────────────────────────────────────────────────
 const darkModeToggle = document.getElementById('darkModeToggle');
 const savedTheme = localStorage.getItem('theme') || 'light';
 document.documentElement.setAttribute('data-theme', savedTheme);
 darkModeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
-
 darkModeToggle.addEventListener('click', () => {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -778,7 +731,6 @@ darkModeToggle.addEventListener('click', () => {
   localStorage.setItem('theme', newTheme);
   darkModeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
 });
-
 // ─── Hilfsfunktion: Warning ausblenden ──────────────────────────
 function hideInitialWarning() {
   const warning = document.getElementById('initialWarning');
@@ -786,13 +738,11 @@ function hideInitialWarning() {
     warning.style.display = 'none';
   }
 }
-
 // ─── Audio Toggle ───────────────────────────────────────────────
 document.getElementById('toggleAudio').addEventListener('click', async () => {
   if (!isActive) {
     try {
       audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: false,
@@ -800,15 +750,11 @@ document.getElementById('toggleAudio').addEventListener('click', async () => {
           autoGainControl: false
         }
       });
-
       microphone = audioContext.createMediaStreamSource(stream);
-
       preGainNode = audioContext.createGain();
       preGainNode.gain.value = 3;
-
       gainNode = audioContext.createGain();
       pannerNode = audioContext.createStereoPanner();
-
       // EQ Filter
       const frequencies = [100, 500, 1000, 3000, 8000];
       frequencies.forEach(freq => {
@@ -819,7 +765,6 @@ document.getElementById('toggleAudio').addEventListener('click', async () => {
         filter.gain.value = 0;
         filters[freq] = filter;
       });
-
       // Verkabelung
       microphone.connect(preGainNode);
       preGainNode.connect(filters[100]);
@@ -830,21 +775,16 @@ document.getElementById('toggleAudio').addEventListener('click', async () => {
       filters[8000].connect(gainNode);
       gainNode.connect(pannerNode);
       pannerNode.connect(audioContext.destination);
-
       hideInitialWarning();
-
       updateVolume();
       updateBalance();
       updateAllEQ();
-
       isActive = true;
       document.getElementById('statusDot').classList.add('active');
       document.getElementById('statusText').textContent = 'Mikrofon aktiv';
-
       const toggleBtn = document.getElementById('toggleAudio');
       toggleBtn.textContent = 'Mikrofon deaktivieren';
       toggleBtn.classList.add('danger');
-
     } catch (err) {
       alert('Fehler beim Zugriff auf das Mikrofon:\n' + err.message);
     }
@@ -855,21 +795,17 @@ document.getElementById('toggleAudio').addEventListener('click', async () => {
     if (audioContext) {
       audioContext.close();
     }
-
     isActive = false;
     document.getElementById('statusDot').classList.remove('active');
     document.getElementById('statusText').textContent = 'Mikrofon inaktiv';
-
     const toggleBtn = document.getElementById('toggleAudio');
     toggleBtn.textContent = 'Mikrofon aktivieren';
     toggleBtn.classList.remove('danger');
   }
 });
-
 // ─── Lautstärke ─────────────────────────────────────────────────
 const masterVolume = document.getElementById('masterVolume');
 masterVolume.addEventListener('input', updateVolume);
-
 function updateVolume() {
   const value = parseInt(masterVolume.value, 10);
   document.getElementById('masterVolumeValue').textContent = value + '%';
@@ -877,11 +813,9 @@ function updateVolume() {
     gainNode.gain.value = (value / 100) * 3;
   }
 }
-
 // ─── Balance ─────────────────────────────────────────────────────
 const balance = document.getElementById('balance');
 balance.addEventListener('input', updateBalance);
-
 function updateBalance() {
   const value = parseInt(balance.value, 10);
   let text = 'Mitte';
@@ -890,11 +824,9 @@ function updateBalance() {
   document.getElementById('balanceValue').textContent = text;
   if (pannerNode) pannerNode.pan.value = value / 100;
 }
-
 // ─── Equalizer ───────────────────────────────────────────────────
 const eqIds = ['eq100', 'eq500', 'eq1k', 'eq3k', 'eq8k'];
 const eqFreqs = [100, 500, 1000, 3000, 8000];
-
 eqIds.forEach((id, index) => {
   const slider = document.getElementById(id);
   slider.addEventListener('input', () => {
@@ -906,7 +838,6 @@ eqIds.forEach((id, index) => {
     }
   });
 });
-
 function updateAllEQ() {
   eqIds.forEach((id, index) => {
     const value = parseFloat(document.getElementById(id).value);
@@ -915,7 +846,6 @@ function updateAllEQ() {
     }
   });
 }
-
 // ─── Speichern / Laden / Reset ───────────────────────────────────
 document.getElementById('saveSettings').addEventListener('click', () => {
   const settings = {
@@ -926,7 +856,6 @@ document.getElementById('saveSettings').addEventListener('click', () => {
   localStorage.setItem('audioSettings', JSON.stringify(settings));
   alert('✓ Einstellungen erfolgreich gespeichert!');
 });
-
 document.getElementById('loadSettings').addEventListener('click', () => {
   const saved = localStorage.getItem('audioSettings');
   if (saved) {
@@ -947,7 +876,6 @@ document.getElementById('loadSettings').addEventListener('click', () => {
     alert('ℹ️ Keine gespeicherten Einstellungen gefunden.');
   }
 });
-
 document.getElementById('resetSettings').addEventListener('click', () => {
   if (confirm('Möchten Sie wirklich alle Einstellungen zurücksetzen?')) {
     masterVolume.value = 50;
@@ -963,7 +891,6 @@ document.getElementById('resetSettings').addEventListener('click', () => {
     alert('✓ Einstellungen wurden zurückgesetzt.');
   }
 });
-
 // ─── Autoload beim Start ─────────────────────────────────────────
 window.addEventListener('load', () => {
   const saved = localStorage.getItem('audioSettings');
@@ -975,38 +902,46 @@ window.addEventListener('load', () => {
     updateAllEQ();
   }
 });
-
 /* ========== Coffee Modal JS ========== */
 const coffeeHUD = document.getElementById("coffeeHUD");
 const coffeeModal = document.getElementById("coffeeModal");
 const coffeeClose = document.getElementById("coffeeClose");
-
 function openCoffeeModal() {
   coffeeModal.classList.add("is-open");
   coffeeModal.setAttribute("aria-hidden", "false");
   coffeeClose.focus();
 }
-
 function closeCoffeeModal() {
   coffeeModal.classList.remove("is-open");
   coffeeModal.setAttribute("aria-hidden", "true");
   coffeeHUD.focus();
 }
-
 coffeeHUD.addEventListener("click", openCoffeeModal);
 coffeeClose.addEventListener("click", closeCoffeeModal);
-
 coffeeModal.addEventListener("click", event => {
   if (event.target === coffeeModal) {
     closeCoffeeModal();
   }
 });
-
 document.addEventListener("keydown", event => {
   if (event.key === "Escape" && coffeeModal.classList.contains("is-open")) {
     closeCoffeeModal();
   }
 });
+
+/* ========== Service Worker Registrierung (PWA) ========== */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("./sw.js")
+      .then((registration) => {
+        console.log("Service Worker registriert:", registration.scope);
+      })
+      .catch((error) => {
+        console.log("Service Worker Registrierung fehlgeschlagen:", error);
+      });
+  });
+}
 </script>
 </body>
 </html>

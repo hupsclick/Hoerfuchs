@@ -11,7 +11,6 @@
   <meta property="og:title" content="Hörhilfe zum besseren Hören">
   <meta property="og:description" content="Hörhilfe zum besseren Hören">
   <meta property="og:type" content="website">
-
   <!-- PWA Meta Tags -->
   <meta name="theme-color" content="#4CAF50">
   <meta name="mobile-web-app-capable" content="yes">
@@ -723,6 +722,48 @@ let gainNode;
 let pannerNode;
 let filters = {};
 let isActive = false;
+let wakeLock = null;          // NEU: Bildschirm-Sperre
+
+// ─── Bildschirm wach halten (Wake Lock) ─────────────────────────
+async function requestWakeLock() {
+  if (!('wakeLock' in navigator)) {
+    console.log('Wake Lock API wird von diesem Browser nicht unterstützt.');
+    return;
+  }
+  if (wakeLock !== null) return; // bereits aktiv
+  try {
+    wakeLock = await navigator.wakeLock.request('screen');
+    wakeLock.addEventListener('release', () => {
+      wakeLock = null;
+    });
+  } catch (err) {
+    wakeLock = null;
+    console.log('Wake Lock konnte nicht aktiviert werden:', err);
+  }
+}
+
+async function releaseWakeLock() {
+  if (wakeLock !== null) {
+    try {
+      await wakeLock.release();
+    } catch (err) {
+      console.log('Wake Lock Freigabe fehlgeschlagen:', err);
+    }
+    wakeLock = null;
+  }
+}
+
+// Android gibt den Wake Lock automatisch frei, sobald die App in den
+// Hintergrund wechselt. Beim Zurückkehren wird er neu angefordert.
+document.addEventListener('visibilitychange', async () => {
+  if (document.visibilityState === 'visible' && isActive) {
+    await requestWakeLock();
+    if (audioContext && audioContext.state !== 'running' && audioContext.state !== 'closed') {
+      try { await audioContext.resume(); } catch (e) {}
+    }
+  }
+});
+
 // ─── Dark Mode ──────────────────────────────────────────────────
 const darkModeToggle = document.getElementById('darkModeToggle');
 const savedTheme = localStorage.getItem('theme') || 'light';
@@ -784,6 +825,18 @@ document.getElementById('toggleAudio').addEventListener('click', async () => {
       updateBalance();
       updateAllEQ();
       isActive = true;
+
+      // NEU: Bildschirm wach halten, solange das Mikrofon aktiv ist
+      await requestWakeLock();
+
+      // NEU: Falls das System den Ton pausiert, automatisch fortsetzen
+      audioContext.addEventListener('statechange', () => {
+        if (isActive && audioContext &&
+            (audioContext.state === 'suspended' || audioContext.state === 'interrupted')) {
+          audioContext.resume().catch(() => {});
+        }
+      });
+
       document.getElementById('statusDot').classList.add('active');
       document.getElementById('statusText').textContent = 'Mikrofon aktiv';
       const toggleBtn = document.getElementById('toggleAudio');
@@ -800,6 +853,10 @@ document.getElementById('toggleAudio').addEventListener('click', async () => {
       audioContext.close();
     }
     isActive = false;
+
+    // NEU: Bildschirm-Sperre wieder freigeben
+    await releaseWakeLock();
+
     document.getElementById('statusDot').classList.remove('active');
     document.getElementById('statusText').textContent = 'Mikrofon inaktiv';
     const toggleBtn = document.getElementById('toggleAudio');
@@ -932,7 +989,6 @@ document.addEventListener("keydown", event => {
     closeCoffeeModal();
   }
 });
-
 /* ========== Service Worker Registrierung (PWA) ========== */
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
